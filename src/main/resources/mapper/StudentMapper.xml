@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.student.dao.StudentMapper">
+  <resultMap id="BaseResultMap" type="Student">
+    <id column="s_id" jdbcType="INTEGER" property="sId" />
+    <result column="s_code" jdbcType="VARCHAR" property="sCode" />
+    <result column="s_name" jdbcType="VARCHAR" property="sName" />
+    <result column="s_sex" jdbcType="VARCHAR" property="sSex" />
+    <result column="s_description" jdbcType="VARCHAR" property="sDescription" />
+  </resultMap>
+  <resultMap id="SCResultMap" type="Student">
+    <id column="s_id" jdbcType="INTEGER" property="sId" />
+    <result column="s_code" jdbcType="VARCHAR" property="sCode" />
+    <result column="s_name" jdbcType="VARCHAR" property="sName" />
+    <result column="s_sex" jdbcType="VARCHAR" property="sSex" />
+    <result column="s_description" jdbcType="VARCHAR" property="sDescription" />
+    <result column="cs_name" jdbcType="VARCHAR" property="csName" />
+    <result column="cs_id" jdbcType="VARCHAR" property="csId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    s_id, s_code, s_name, s_sex, s_description
+  </sql>
+  <sql id="SC_Column_List">
+    s_id, s_code, s_name, s_sex, s_description, cs_name, cs_id
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from student
+  </select>
+  
+  <select id="getStudentByCourseId" parameterType="java.lang.Integer" resultMap="SCResultMap">
+    select 
+    <include refid="SC_Column_List" />
+    from view_student_course
+    where cs_id=#{csId,jdbcType=INTEGER}
+  </select>
+  <select id="getStudentNotByCourseId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from student
+	where s_id not in (
+		select s_id 
+		from view_student_course
+    	where cs_id=#{csId,jdbcType=INTEGER}
+	)
+  </select>
+  
+  
+  <select id="getListBysCode" parameterType="Student"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from student
+    where s_code=#{sCode,jdbcType=INTEGER}
+   
+  </select>
+  
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from student
+    where s_id = #{sId,jdbcType=INTEGER}
+   <!--  where s_code = #{scode,jdbcType=INTEGER} -->
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from student
+    where s_id = #{sId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByPrimaryKeys" parameterType="java.lang.String">
+    delete from student
+    where s_id in (#{sId,jdbcType=VARCHAR})
+  </delete>
+  
+  
+  <insert id="insert" parameterType="Student">
+    insert into student (s_id, s_code, s_name, 
+      s_sex, s_description)
+    values (#{sId,jdbcType=INTEGER}, #{sCode,jdbcType=VARCHAR}, #{sName,jdbcType=VARCHAR}, 
+      #{sSex,jdbcType=VARCHAR}, #{sDescription,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="Student">
+    insert into student
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sId != null">
+        s_id,
+      </if>
+      <if test="sCode != null">
+        s_code,
+      </if>
+      <if test="sName != null">
+        s_name,
+      </if>
+      <if test="sSex != null">
+        s_sex,
+      </if>
+      <if test="sDescription != null">
+        s_description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sId != null">
+        #{sId,jdbcType=INTEGER},
+      </if>
+      <if test="sCode != null">
+        #{sCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sName != null">
+        #{sName,jdbcType=VARCHAR},
+      </if>
+      <if test="sSex != null">
+        #{sSex,jdbcType=VARCHAR},
+      </if>
+      <if test="sDescription != null">
+        #{sDescription,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="Student">
+    update student
+    <set>
+      <if test="sCode != null">
+        s_code = #{sCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sName != null">
+        s_name = #{sName,jdbcType=VARCHAR},
+      </if>
+      <if test="sSex != null">
+        s_sex = #{sSex,jdbcType=VARCHAR},
+      </if>
+      <if test="sDescription != null">
+        s_description = #{sDescription,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where s_id = #{sId,jdbcType=INTEGER}
+    
+  </update>
+  <update id="updateByPrimaryKey" parameterType="Student">
+    update student
+    set s_code = #{sCode,jdbcType=VARCHAR},
+      s_name = #{sName,jdbcType=VARCHAR},
+      s_sex = #{sSex,jdbcType=VARCHAR},
+      s_description = #{sDescription,jdbcType=VARCHAR}
+    where s_id = #{sId,jdbcType=INTEGER}
+  </update>
+</mapper>

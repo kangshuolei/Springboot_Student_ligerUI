@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.student.dao.CourseMapper">
+  <resultMap id="BaseResultMap" type="Course">
+    <id column="cs_id" jdbcType="INTEGER" property="csId" />
+    <result column="cs_name" jdbcType="VARCHAR" property="csName" />
+    <result column="cs_description" jdbcType="VARCHAR" property="csDescription" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    cs_id, cs_name, cs_description
+  </sql>
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from course
+    where cs_id = #{csId,jdbcType=INTEGER}
+  </select>  
+  <select id="getAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from course
+  </select>  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from course
+    where cs_id = #{csId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByPrimaryKeys" parameterType="java.lang.String">
+    delete from course
+    where cs_id in (#{csId,jdbcType=VARCHAR})
+  </delete>
+  
+  
+  <insert id="insert" parameterType="Course">
+    insert into course (cs_id, cs_name, cs_description
+      )
+    values (#{csId,jdbcType=INTEGER}, #{csName,jdbcType=VARCHAR}, #{csDescription,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="Course">
+    insert into course
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="csId != null">
+        cs_id,
+      </if>
+      <if test="csName != null">
+        cs_name,
+      </if>
+      <if test="csDescription != null">
+        cs_description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="csId != null">
+        #{csId,jdbcType=INTEGER},
+      </if>
+      <if test="csName != null">
+        #{csName,jdbcType=VARCHAR},
+      </if>
+      <if test="csDescription != null">
+        #{csDescription,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="Course">
+    update course
+    <set>
+      <if test="csName != null">
+        cs_name = #{csName,jdbcType=VARCHAR},
+      </if>
+      <if test="csDescription != null">
+        cs_description = #{csDescription,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cs_id = #{csId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="Course">
+    update course
+    set cs_name = #{csName,jdbcType=VARCHAR},
+      cs_description = #{csDescription,jdbcType=VARCHAR}
+    where cs_id = #{csId,jdbcType=INTEGER}
+  </update>
+</mapper>

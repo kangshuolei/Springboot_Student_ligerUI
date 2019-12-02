@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="author" content="order by dede58.com"/>
+<title>用户注册</title>
+<meta name="author" content="DeathGhost" />
+<link rel="stylesheet" type="text/css" href="css/style.css" tppabs="css/style.css" />
+<style>
+body{height:100%;background:#16a085;overflow:hidden;} 
+canvas{z-index:-1;position:absolute;}
+.admin_login{width:500px;height:300px;}
+</style>
+<script src="js/jquery.js"></script>
+<script src="js/verificationNumbers.js" tppabs="js/verificationNumbers.js"></script>
+<script src="js/Particleground.js" tppabs="js/Particleground.js"></script>
+<script>
+$(document).ready(function() {
+  //粒子背景特效
+  $('body').particleground({
+    dotColor: '#5cbdaa',
+    lineColor: '#5cbdaa'
+  });
+  $("#loginBtn").click(function(){
+	  location.href="javascrpt:;"/*tpa=http://***index.html*/;
+	  });
+});
+  </script>
+</head>
+<body>
+<form class="login100-form validate-form" name="loginform" method="POST" id="loginform" action="">
+<dl class="admin_login"  >
+
+ <dt>
+
+  <strong>用户注册</strong>
+  <dd class="user_icon">
+
+  <input type="text" placeholder="用户名"  id="uName" name="uName" class="login_txtbx"/>
+ </dd>
+
+<dd class="pwd_icon">
+  <input type="password" placeholder="密码"    id="uPwd" name="uPwd" class="login_txtbx"/>
+ </dd>
+ <dd>
+  <input type="button" onClick="login()" value="注册" class="submit_btn" id="loginBtn"/>
+ </dd>
+  <dd>
+  <input type="button" value="登录" class="submit_btn" onClick="adduser()"/>
+ </dd>
+ <dd >
+ 
+    <input type="text" id="J_codetext"   style="display:none" />
+
+  
+ </dd>
+ 
+ </dt>
+  <dd>
+  <p>© 2018-2019 jq22 版权所有</p>
+  <p>冀B2-8998988-1</p>
+ </dd>
+</dl>
+</form>
+<script type="text/javascript">
+
+function adduser(){	 
+	location.href = "index";
+
+}  
+
+function getData(){
+    var data = {};
+    data.uName = $("#uName").val();
+    data.uPwd = $("#uPwd").val();
+    return JSON.stringify(data);
+}
+
+		function login(){
+// 			document.getElementById("loginform").submit();
+			
+		    if(loginform.uName.value==""){   
+		    	alert("用户名不能为空！");loginform.uName.focus();return false;
+		    }
+		    if(loginform.uPwd.value==""){   
+		    	alert("密码不能为空！");loginform.uPwd.focus();return false;
+		    }   
+		
+			 
+        	if($("#id").val() !=""){
+        		var selfUrl= "register"
+        	} 
+        	console.log(getData());
+        	$.ajax({
+        		url : selfUrl,
+        		type:"post",
+        		contentType: "application/json; charset=utf-8",
+        		data: getData(),
+        		success:function(result){
+        			alert(result);
+        			history.go(0)
+        		},
+        		error:function(){
+        			alert("error");
+        		}
+        	});
+
+        
+
+
+	  
+	
+		}
+			</script>
+</body>
+</html>

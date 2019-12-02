@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> 
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <title>新增课程</title>   
+      
+<link href="/lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+<link href="/lib/ligerUI/skins/ligerui-icons.css" rel="stylesheet" type="text/css" />
+<link href="/lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css" />
+<script src="/lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script> 
+<script src="/lib/ligerUI/js/core/base.js" type="text/javascript"></script> 
+<script src="/lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
+<script src="/lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+<script src="/lib/ligerUI/js/ligerui.all.js"></script>
+
+  
+    <meta name="keywords" content="免费控件,免费UI控件,免费开源UI,免费开源UI控件,免费开源UI框架,弹窗组件,dialog,jquery弹窗" />
+    <script type="text/javascript">
+        var dialog = frameElement.dialog; //调用页面的dialog对象(ligerui对象)
+     
+        function showDialogData(){
+            var dialogData = dialog.get('data');//获取data参数
+            document.getElementById("message").innerHTML = "dialog.get('data'):" + dialogData.name + "<br>dialog.get('myDataName'):" + dialog.get('myDataName');
+        }
+
+        function getData(){
+            var form = liger.get("form1");
+            var data = form.getData();
+            console.log(data);
+            return JSON.stringify(data);
+        }
+
+        function submitData(){
+        	if($("#csId").val() != ""){
+        		var selfUrl = "/modifyCourse";
+        	}else{
+        		var selfUrl = "/addCourse";
+        	}
+        	$.ajax({
+        		url:selfUrl,
+        		type:"post",
+        		contentType: "application/json; charset=utf-8",
+        		data:getData(),
+        		success:function(result){
+        			parent.g.reload(result.resultListEntity);
+        			dialog.close();//关闭dialog 
+        		},
+        		error:function(){
+        			alert("error");
+        		}
+        	});
+        }
+
+    </script>
+</head>
+<body>
+
+<div id="form1"  class="liger-form" >
+
+	<input id="csId" name="csId" style="display:none" type="text" th:value="${course.csId}" />
+	课程名称<input id="csName"  name="csName" type="text" class="ui-textbox" th:value="${course.csName}"/>
+	备注<input id="csDescription"  name="csDescription" type="text" class="ui-textbox"  th:value="${course.csDescription}" />
+	<!-- js的事件：onclick onchange onselect onfocus onblur -->
+	 <input value="确认" type="button" onclick="submitData()" />
+ 
+</div>
+</body>
+</html>
